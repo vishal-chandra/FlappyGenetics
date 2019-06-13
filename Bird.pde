@@ -8,7 +8,15 @@ class Bird implements Comparable<Bird>
   int timeAlive = 0;
   boolean dead = false;
 
-  NeuralNetwork brain = new NeuralNetwork(2,4,1);
+  NeuralNetwork brain;
+  
+  Bird(){
+    brain = new NeuralNetwork(2,4,1);
+  } 
+  
+  Bird(NeuralNetwork nn) {
+    brain = nn;
+  }
   
   void show(PImage img) {
     //fill(255);

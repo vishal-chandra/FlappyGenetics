@@ -73,8 +73,10 @@ void draw() {
       break;
     }
   }
-  if(allDead) reset();
-  
+  if(allDead) {
+    flock.runGA();
+    reset();
+  }
 }
 
 //void keyPressed() {
