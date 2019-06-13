@@ -16,7 +16,7 @@ PImage img;
 PFont font;
 
 void setup() {
-  font = createFont("helvetica", 14, true);
+  font = createFont("helvetica", 16, true);
   img = loadImage("flappy.png");
   size(600, 600);
   background(255);
@@ -80,6 +80,11 @@ void draw() {
     flock.runGA();
     reset();
   }
+  
+  fill(0);
+  //convert frames to seconds
+  text("Alltime Best Bird: \n" + flock.alltimeBestScore/30 + " secs", 500, 10);
+  text("Generation: " + flock.generation, 500, 40);
 }
 
 Pipe getClosestPipe() {
