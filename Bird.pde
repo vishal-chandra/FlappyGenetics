@@ -1,3 +1,4 @@
+import basic_neural_network.*;
 class Bird
 {
   int x = 45;
@@ -19,16 +20,13 @@ class Bird
     velocity *= 0.9;
     y += velocity;
     
-    if(y > height)
+    //hits top
+    if(y < 0)
     {
       velocity = 0;
       y = height;
     }
-    if(y < 0)
-    {
-      y = 0;
-      velocity = 0;
-    }
+    //hits bottom resets game and is handled by FlappyGenetics.pde
   }
   
   void up()

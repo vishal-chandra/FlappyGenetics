@@ -11,18 +11,25 @@ void setup() {
   frameRate(30);
   
   bird = new Bird();
+  pipes.add(new Pipe());
 }
 
 void draw() {
   background(255);
   
+  //bird
   bird.show();
   bird.update();
+  if(bird.y > height) { 
+    reset();
+  }
   
+  //new pipes
   if(frameCount % 100 == 0) {
     pipes.add(new Pipe());
   }
   
+  //all pipes
   for(int i = 0; i < pipes.size(); i++) {
     
     Pipe p = pipes.get(i);
@@ -37,12 +44,12 @@ void draw() {
     }
     
     if(bird.collidedWith(p)) {
-      pipes.clear();
-      bird.reset();
+      reset();
     }
     
   }
   
+  //update scores
   for(Individual ind : alg.pop.population){
     ind.aliveCount++;
   }
@@ -55,4 +62,11 @@ void keyPressed() {
     {
       bird.up();
     }
+}
+
+void reset() {
+  bird.reset();
+  pipes.clear();
+  frameCount = 1;
+  pipes.add(new Pipe());
 }

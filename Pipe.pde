@@ -5,7 +5,7 @@ class Pipe
    int gapHeight = 100;
    int topHeight = int(random(height - gapHeight));
    int bottomHeight = topHeight + gapHeight;
-   int speed = 3;
+   int speed = 4;
    
    void show()
    {
