@@ -14,7 +14,8 @@ class Pipe
    
    void show()
    {
-     fill(0);
+     stroke(147, 200, 79);
+     fill(147, 200, 79);
      rect(x, 0, w, topHeight);
      rect(x, bottomHeight, w, height);
    }
@@ -23,6 +24,4 @@ class Pipe
    {
      x -= speed;
    }
-   
-   
 }

@@ -1,4 +1,4 @@
-class Bird
+class Bird implements Comparable<Bird>
 {
   int x = 45;
   int y = width/2;
@@ -10,10 +10,11 @@ class Bird
 
   NeuralNetwork brain = new NeuralNetwork(2,4,1);
   
-  void show() {
-    fill(255);
-    stroke(0);
-    ellipse(x, y, 40, 40);
+  void show(PImage img) {
+    //fill(255);
+    //stroke(0);
+    //ellipse(x, y, 40, 40);
+    image(img, x, y, 50, 40);
   }
   
   void update() {
@@ -54,4 +55,11 @@ class Bird
         return true;
     return false; 
   }
+  
+  int compareTo(Bird b) {
+    if(this.timeAlive == b.timeAlive) return 0;
+    if(this.timeAlive > b.timeAlive) return 1;
+    return -1;
+  }
+ 
 }

@@ -1,8 +1,9 @@
-GA alg;
 Flock flock;
 ArrayList<Pipe> pipes = new ArrayList();
+PImage img;
 
 void setup() {
+  img = loadImage("flappy.png");
   size(600, 600);
   background(255);
   frameRate(30);
@@ -17,7 +18,7 @@ void draw() {
   //birds
   for(Bird bird : flock.birds) {
     if(!bird.dead) {
-      bird.show();
+      bird.show(img);
       bird.update();
       if(bird.y > height) { 
         bird.dead = true;
@@ -51,6 +52,8 @@ void draw() {
     
   }
   
+  //check which pipe is closer and feed that to
+  //the neural networks
   if(!pipes.get(0).behindBird) {
     Pipe p = pipes.get(0);
     for(Bird bird : flock.birds)
@@ -71,6 +74,7 @@ void draw() {
     }
   }
   if(allDead) reset();
+  
 }
 
 //void keyPressed() {
