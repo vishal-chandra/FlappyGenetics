@@ -1,27 +1,28 @@
 GA alg;
-Bird bird;
+Flock flock;
 ArrayList<Pipe> pipes = new ArrayList();
 
 void setup() {
-  alg = new GA();
-  alg.run();
-  
   size(600, 600);
   background(255);
   frameRate(30);
   
-  bird = new Bird();
+  flock = new Flock(); 
   pipes.add(new Pipe());
 }
 
 void draw() {
   background(255);
   
-  //bird
-  bird.show();
-  bird.update();
-  if(bird.y > height) { 
-    reset();
+  //birds
+  for(Bird bird : flock.birds) {
+    if(!bird.dead) {
+      bird.show();
+      bird.update();
+      if(bird.y > height) { 
+        bird.dead = true;
+      }
+    }
   }
   
   //new pipes
@@ -42,28 +43,34 @@ void draw() {
       i--; //avoid arraylist skip
     }
     
-    if(p.x < bird.x) p.behindBird = true;
+    if(p.x < flock.birds[0].x) p.behindBird = true;
     
-    if(bird.collidedWith(p)) {
-      reset();
+    for(Bird bird : flock.birds) { 
+      if(bird.collidedWith(p)) bird.dead = true;
     }
     
   }
   
   if(!pipes.get(0).behindBird) {
     Pipe p = pipes.get(0);
-    bird.decide(p.x, p.y); 
+    for(Bird bird : flock.birds)
+      bird.decide(p.x, p.y); 
   }
   else {
     Pipe p = pipes.get(1);
-    bird.decide(p.x, p.y); 
+    for(Bird bird : flock.birds)
+      bird.decide(p.x, p.y); 
   }
   
-  //update scores
-  for(Individual ind : alg.pop.population){
-    ind.aliveCount++;
+  //checking if all dead
+  boolean allDead = true;
+  for(Bird bird : flock.birds) {
+    if(!bird.dead) {
+      allDead = false;
+      break;
+    }
   }
-  
+  if(allDead) reset();
 }
 
 //void keyPressed() {
@@ -75,7 +82,9 @@ void draw() {
 //}
 
 void reset() {
-  bird.reset();
+  println("resetting");
+  for(Bird bird : flock.birds)
+    bird.reset();
   pipes.clear();
   frameCount = 1;
   pipes.add(new Pipe());

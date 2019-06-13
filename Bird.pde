@@ -6,6 +6,7 @@ class Bird
   float gravity = 0.9;
   int lift = 12;
   int timeAlive = 0;
+  boolean dead = false;
 
   NeuralNetwork brain = new NeuralNetwork(2,4,1);
   
@@ -44,6 +45,7 @@ class Bird
     x = 45;
     y = width/2;
     timeAlive = 0;
+    dead = false;
   }
   
   boolean collidedWith(Pipe pipe) {
