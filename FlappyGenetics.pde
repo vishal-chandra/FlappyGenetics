@@ -35,7 +35,6 @@ void draw() {
     Pipe p = pipes.get(i);
     
     p.show();
-    
     p.update();
     
     if(p.x < -p.w) {
@@ -43,10 +42,21 @@ void draw() {
       i--; //avoid arraylist skip
     }
     
+    if(p.x < bird.x) p.behindBird = true;
+    
     if(bird.collidedWith(p)) {
       reset();
     }
     
+  }
+  
+  if(!pipes.get(0).behindBird) {
+    Pipe p = pipes.get(0);
+    bird.decide(p.x, p.y); 
+  }
+  else {
+    Pipe p = pipes.get(1);
+    bird.decide(p.x, p.y); 
   }
   
   //update scores
@@ -56,13 +66,13 @@ void draw() {
   
 }
 
-void keyPressed() {
+//void keyPressed() {
   
-    if(key == ' ') 
-    {
-      bird.up();
-    }
-}
+//    if(key == ' ') 
+//    {
+//      bird.up();
+//    }
+//}
 
 void reset() {
   bird.reset();

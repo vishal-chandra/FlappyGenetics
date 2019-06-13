@@ -1,4 +1,3 @@
-import basic_neural_network.*;
 class Bird
 {
   int x = 45;
@@ -6,16 +5,18 @@ class Bird
   float velocity = 0;
   float gravity = 0.9;
   int lift = 12;
+  int timeAlive = 0;
+
+  NeuralNetwork brain = new NeuralNetwork(2,4,1);
   
-  void show()
-  {
+  void show() {
     fill(255);
     stroke(0);
     ellipse(x, y, 40, 40);
   }
   
-  void update()
-  {
+  void update() {
+    timeAlive++;
     velocity += gravity;
     velocity *= 0.9;
     y += velocity;
@@ -29,19 +30,23 @@ class Bird
     //hits bottom resets game and is handled by FlappyGenetics.pde
   }
   
-  void up()
-  {
+  void up() {
      velocity -= lift;
   }
   
-  void reset()
-  {
-    x = 45;
-    y = width/2;
+  void decide(int gapX, int gapY) {
+    double[] inputLayer = {(double)(gapX - this.x), (double)(gapY - this.y)};
+    double prediction = brain.guess(inputLayer)[0];
+    if(prediction > 0.5) up();
   }
   
-  boolean collidedWith(Pipe pipe)
-  {
+  void reset() {
+    x = 45;
+    y = width/2;
+    timeAlive = 0;
+  }
+  
+  boolean collidedWith(Pipe pipe) {
     if(x > pipe.x && x < pipe.x + pipe.w)
       if(y < pipe.topHeight || y > pipe.topHeight + pipe.gapHeight)
         return true;
