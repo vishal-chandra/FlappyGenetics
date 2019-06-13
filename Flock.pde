@@ -4,8 +4,12 @@ class Flock {
   
   int flockSize = 300;
   Bird[] birds;
-  
   Bird[] fittest, offspring; //leaders will have 24 birds since 24 + 24C2 = 300
+  
+  //stats
+  int generation = 0;
+  int alltimeBestScore = 0;
+  Bird alltimeBestBird;
   
   Flock() {
     
@@ -16,6 +20,7 @@ class Flock {
   }
   
   void runGA() {
+    generation++;
     sortBirds();
     selection();
     crossover();
@@ -26,6 +31,12 @@ class Flock {
   
   void sortBirds() {
     Arrays.sort(birds);
+    
+    //check if the current top bird is the best of all time
+    if(birds[flockSize - 1].timeAlive > alltimeBestScore) {
+      alltimeBestScore = birds[flockSize - 1].timeAlive;
+      alltimeBestBird = birds[flockSize - 1];
+    }
   }
   
   void selection() {
@@ -59,5 +70,10 @@ class Flock {
       bird.reset();
   }
   
+  void downloadBest() {
+    sortBirds();
+    alltimeBestBird.brain.writeToFile();
+    println("written");
+  }
   
 }

@@ -1,13 +1,28 @@
+/*
+  Q Learning with Flappy Bird
+  by Vishal Chandra
+  
+  300 birds play the game at once, then the top 24
+  are selected for the next generation. They produce
+  276 (24 C 2) offspring to fill the rest of the generation.
+  This continues...
+  
+  Press D to download the current alltime best bird
+*/
+
 Flock flock;
 ArrayList<Pipe> pipes = new ArrayList();
 PImage img;
+PFont font;
 
 void setup() {
+  font = createFont("helvetica", 14, true);
   img = loadImage("flappy.png");
   size(600, 600);
   background(255);
   frameRate(30);
   
+  //init assets
   flock = new Flock(); 
   pipes.add(new Pipe());
 }
@@ -15,11 +30,14 @@ void setup() {
 void draw() {
   background(255);
   
-  //birds
+  //update birds
   for(Bird bird : flock.birds) {
+    
     if(!bird.dead) {
       bird.show(img);
       bird.update();
+      
+      //dies if it hits the ground
       if(bird.y > height) { 
         bird.dead = true;
       }
@@ -31,11 +49,10 @@ void draw() {
     pipes.add(new Pipe());
   }
   
-  //all pipes
+  //update pipe info
   for(int i = 0; i < pipes.size(); i++) {
     
     Pipe p = pipes.get(i);
-    
     p.show();
     p.update();
     
@@ -54,18 +71,29 @@ void draw() {
   
   //check which pipe is closer and feed that to
   //the neural networks
-  if(!pipes.get(0).behindBird) {
-    Pipe p = pipes.get(0);
-    for(Bird bird : flock.birds)
-      bird.decide(p.x, p.y); 
-  }
-  else {
-    Pipe p = pipes.get(1);
-    for(Bird bird : flock.birds)
-      bird.decide(p.x, p.y); 
-  }
+  Pipe p = getClosestPipe();
+  for(Bird bird : flock.birds)
+    bird.decide(p.x, p.y);
   
   //checking if all dead
+  if(allDead()) {
+    flock.runGA();
+    reset();
+  }
+}
+
+Pipe getClosestPipe() {
+  Pipe p;
+  if(!pipes.get(0).behindBird) {
+    p = pipes.get(0);
+  }
+  else {
+    p = pipes.get(1); 
+  }
+  return p;
+}
+
+boolean allDead() {
   boolean allDead = true;
   for(Bird bird : flock.birds) {
     if(!bird.dead) {
@@ -73,22 +101,16 @@ void draw() {
       break;
     }
   }
-  if(allDead) {
-    flock.runGA();
-    reset();
-  }
+  return allDead;
 }
 
-//void keyPressed() {
-  
-//    if(key == ' ') 
-//    {
-//      bird.up();
-//    }
-//}
+void keyPressed() {
+    if(key == 'D' || key == 'd') {
+      flock.downloadBest();
+    }
+}
 
 void reset() {
-  println("resetting");
   for(Bird bird : flock.birds)
     bird.reset();
   pipes.clear();
