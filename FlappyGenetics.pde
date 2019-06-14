@@ -23,7 +23,7 @@ void setup() {
   img = loadImage("flappy.png");
   size(600, 600);
   background(255);
-  frameRate(60);
+  frameRate(30);
   
   //init assets
   flock = new Flock(); 

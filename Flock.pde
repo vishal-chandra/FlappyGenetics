@@ -58,7 +58,7 @@ class Flock {
   
   void mutate() {
     for(Bird child : offspring)
-      child.brain.mutate(0.15);
+      child.brain.mutate(0.10);
   }
   
   void newPopulation() {
