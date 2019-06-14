@@ -10,8 +10,11 @@
   Press D to download the current alltime best bird
 */
 
+//assets
 Flock flock;
 ArrayList<Pipe> pipes = new ArrayList();
+
+//text
 PImage img;
 PFont font;
 
@@ -20,7 +23,7 @@ void setup() {
   img = loadImage("flappy.png");
   size(600, 600);
   background(255);
-  frameRate(30);
+  frameRate(60);
   
   //init assets
   flock = new Flock(); 
@@ -28,6 +31,10 @@ void setup() {
 }
 
 void draw() {
+    runFPGA();
+}
+
+void runFPGA() {
   background(255);
   
   //update birds
