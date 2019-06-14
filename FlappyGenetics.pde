@@ -11,7 +11,8 @@
 */
 
 //assets
-Flock flock;
+//Flock flock;
+Bird bird;
 ArrayList<Pipe> pipes = new ArrayList();
 
 //text
@@ -26,28 +27,27 @@ void setup() {
   frameRate(30);
   
   //init assets
-  flock = new Flock(); 
+  //flock = new Flock();
+  bird = new Bird("hi");
   pipes.add(new Pipe());
 }
 
 void draw() {
-    runFPGA();
+  runFPGA();
 }
 
 void runFPGA() {
   background(255);
   
   //update birds
-  for(Bird bird : flock.birds) {
+  
+  if(!bird.dead) {
+    bird.show(img);
+    bird.update();
     
-    if(!bird.dead) {
-      bird.show(img);
-      bird.update();
-      
-      //dies if it hits the ground
-      if(bird.y > height) { 
-        bird.dead = true;
-      }
+    //dies if it hits the ground
+    if(bird.y > height) { 
+      bird.dead = true;
     }
   }
   
@@ -68,32 +68,30 @@ void runFPGA() {
       i--; //avoid arraylist skip
     }
     
-    if(p.x < flock.birds[0].x) p.behindBird = true;
+    if(p.x < bird.x) p.behindBird = true;
     
-    for(Bird bird : flock.birds) { 
-      if(bird.collidedWith(p)) bird.dead = true;
-    }
+    if(bird.collidedWith(p)) bird.dead = true;
     
   }
   
   //check which pipe is closer and feed that to
   //the neural networks
   Pipe p = getClosestPipe();
-  for(Bird bird : flock.birds)
-    bird.decide(p.x, p.y);
+  bird.decide(p.x, p.y);
   
   //checking if all dead
-  if(allDead()) {
-    flock.runGA();
+  if(bird.dead) {
+    //flock.runGA();
     reset();
   }
   
   
-  fill(0);
+  //fill(0);
   //convert frames to seconds
-  text("Alltime Best Bird: \n" + flock.alltimeBestScore/30 + " secs", 500, 10);
-  text("Generation: " + flock.generation, 500, 40);
+  //text("Alltime Best Bird: \n" + flock.alltimeBestScore/30 + " secs", 500, 10);
+  //text("Generation: " + flock.generation, 500, 40);
 }
+
 
 Pipe getClosestPipe() {
   Pipe p;
@@ -106,26 +104,25 @@ Pipe getClosestPipe() {
   return p;
 }
 
-boolean allDead() {
-  boolean allDead = true;
-  for(Bird bird : flock.birds) {
-    if(!bird.dead) {
-      allDead = false;
-      break;
-    }
-  }
-  return allDead;
-}
+//boolean allDead() {
+//  boolean allDead = true;
+//  for(Bird bird : flock.birds) {
+//    if(!bird.dead) {
+//      allDead = false;
+//      break;
+//    }
+//  }
+//  return allDead;
+//}
 
-void keyPressed() {
-    if(key == 'D' || key == 'd') {
-      flock.downloadBest();
-    }
-}
+//void keyPressed() {
+//    if(key == 'D' || key == 'd') {
+//      flock.downloadBest();
+//    }
+//}
 
 void reset() {
-  for(Bird bird : flock.birds)
-    bird.reset();
+  bird.reset();
   pipes.clear();
   frameCount = 1;
   pipes.add(new Pipe());

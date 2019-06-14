@@ -18,6 +18,10 @@ class Bird implements Comparable<Bird>
     brain = nn;
   }
   
+  Bird(String s) {
+    brain = FileReaderAndWriter.readFromFile();
+  }
+  
   void show(PImage img) {
     //fill(255);
     //stroke(0);
