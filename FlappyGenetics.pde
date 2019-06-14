@@ -81,6 +81,7 @@ void draw() {
     reset();
   }
   
+  
   fill(0);
   //convert frames to seconds
   text("Alltime Best Bird: \n" + flock.alltimeBestScore/30 + " secs", 500, 10);
