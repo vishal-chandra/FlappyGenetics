@@ -15,12 +15,14 @@ Flock flock;
 ArrayList<Pipe> pipes = new ArrayList();
 
 //text
-PImage img;
+PImage img, imgRed;
+PImage leadImg;
 PFont font;
 
 void setup() {
   font = createFont("helvetica", 16, true);
-  img = loadImage("flappy.png");
+  img = loadImage("res/flappy.png");
+  imgRed = loadImage("res/flappyRed.png");
   size(600, 600);
   background(255);
   frameRate(30);
@@ -41,7 +43,7 @@ void runFPGA() {
   for(Bird bird : flock.birds) {
     
     if(!bird.dead) {
-      bird.show(img);
+      bird.show(img, imgRed);
       bird.update();
       
       //dies if it hits the ground

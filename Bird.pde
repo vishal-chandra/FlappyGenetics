@@ -1,12 +1,18 @@
 class Bird implements Comparable<Bird>
 {
+  //pos
   int x = 45;
   int y = width/2;
+  
+  //physics
   float velocity = 0;
   float gravity = 0.9;
   int lift = 12;
+  
+  //fitness
   int timeAlive = 0;
   boolean dead = false;
+  boolean bestOfGen = false;
 
   NeuralNetwork brain;
   
@@ -18,11 +24,16 @@ class Bird implements Comparable<Bird>
     brain = nn;
   }
   
-  void show(PImage img) {
+  void show(PImage img, PImage imgRed) {
     //fill(255);
     //stroke(0);
     //ellipse(x, y, 40, 40);
-    image(img, x, y, 50, 40);
+    if(bestOfGen) { 
+      image(imgRed, x, y, 50, 40);
+    }
+    else {
+      image(img, x, y, 50, 40);
+    }
   }
   
   void update() {

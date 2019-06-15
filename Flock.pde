@@ -32,11 +32,17 @@ class Flock {
   void sortBirds() {
     Arrays.sort(birds);
     
+    Bird currentTop = birds[flockSize - 1];
+    
     //check if the current top bird is the best of all time
-    if(birds[flockSize - 1].timeAlive > alltimeBestScore) {
-      alltimeBestScore = birds[flockSize - 1].timeAlive;
-      alltimeBestBird = birds[flockSize - 1];
+    if(currentTop.timeAlive > alltimeBestScore) {
+      alltimeBestScore = currentTop.timeAlive;
+      alltimeBestBird = currentTop;
     }
+    
+    for(Bird bird : birds) 
+      bird.bestOfGen = false;  
+    currentTop.bestOfGen = true;
   }
   
   void selection() {
